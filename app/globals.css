@@ -669,6 +669,87 @@ section {
   }
 }
 
+/* ===== ANIMAÇÃO ESPECIAL PARA O TÍTULO PRINCIPAL OCEAN-NET ===== */
+
+.title-ocean-net-special {
+  background: linear-gradient(
+    90deg,
+    #ffffff 0%,
+    #e0f2fe 15%,
+    #7dd3fc 25%,
+    #0ea5e9 35%,
+    #0284c7 40%,
+    #0369a1 45%,
+    #075985 50%,
+    #0369a1 55%,
+    #0284c7 60%,
+    #0ea5e9 65%,
+    #7dd3fc 75%,
+    #e0f2fe 85%,
+    #ffffff 100%
+  );
+  background-size: 300% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: oceanNetFlow 4s ease-in-out infinite;
+  text-shadow: 0 0 30px rgba(14, 165, 233, 0.3), 0 0 60px rgba(14, 165, 233, 0.1);
+  filter: brightness(1.1);
+  position: relative;
+}
+
+@keyframes oceanNetFlow {
+  0% {
+    background-position: 0% 50%;
+    transform: translateY(0px) scale(1);
+    filter: brightness(1.1) drop-shadow(0 0 10px rgba(14, 165, 233, 0.2));
+  }
+  25% {
+    background-position: 50% 50%;
+    transform: translateY(-3px) scale(1.02);
+    filter: brightness(1.2) drop-shadow(0 0 15px rgba(14, 165, 233, 0.3));
+  }
+  50% {
+    background-position: 100% 50%;
+    transform: translateY(0px) scale(1);
+    filter: brightness(1.1) drop-shadow(0 0 10px rgba(14, 165, 233, 0.2));
+  }
+  75% {
+    background-position: 150% 50%;
+    transform: translateY(3px) scale(0.98);
+    filter: brightness(1.05) drop-shadow(0 0 8px rgba(14, 165, 233, 0.15));
+  }
+  100% {
+    background-position: 200% 50%;
+    transform: translateY(0px) scale(1);
+    filter: brightness(1.1) drop-shadow(0 0 10px rgba(14, 165, 233, 0.2));
+  }
+}
+
+/* Versão mobile da animação especial */
+@media (max-width: 768px) {
+  .title-ocean-net-special {
+    animation-duration: 5s; /* Um pouco mais lenta em mobile */
+    text-shadow: 0 0 20px rgba(14, 165, 233, 0.25), 0 0 40px rgba(14, 165, 233, 0.08);
+  }
+}
+
+/* Pausar animação especial se o usuário preferir movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+  .title-ocean-net-special {
+    animation: none;
+    background: linear-gradient(90deg, #ffffff 0%, #0ea5e9 50%, #ffffff 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    text-shadow: none;
+    transform: none;
+    filter: none;
+  }
+}
+
 /* Sombras sutis complementares */
 .title-glow-subtle {
   text-shadow: 0 0 3px rgba(59, 130, 246, 0.1), 0 0 6px rgba(59, 130, 246, 0.05);
@@ -717,8 +798,9 @@ section {
   .title-diamond-subtle,
   .title-holo-subtle,
   .title-glacial-subtle,
-  .title-energy-subtle {
-    animation-duration: 16s;
+  .title-energy-subtle,
+  .subtitle-glow-subtle {
+    animation-duration: 8s; /* Duração consistente para mobile */
   }
 }
 

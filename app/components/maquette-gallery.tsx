@@ -56,10 +56,33 @@ export default function MaquetteGallery() {
       section: "overview",
     },
     {
+      src: "/images/Visão_Geral_3.jpeg",
+      alt: "Vista alternativa da maquete Ocean-net",
+      title: "Vista Geral Alternativa",
+      description:
+        "Perspectiva diferente da maquete mostrando detalhes da estrutura e componentes eletrônicos integrados",
+      section: "overview",
+    },
+    {
+      src: "/images/Detalhes_1.jpeg",
+      alt: "Detalhes dos componentes da maquete Ocean-net",
+      title: "Detalhes dos Componentes",
+      description: "Visualização detalhada dos componentes eletrônicos, LEDs e estruturas em miniatura da maquete",
+      section: "details",
+    },
+    {
+      src: "/images/Detalhes_2.jpeg",
+      alt: "Detalhes adicionais da estrutura da maquete",
+      title: "Detalhes da Estrutura",
+      description: "Componentes específicos da maquete mostrando a integração entre materiais recicláveis e tecnologia",
+      section: "details",
+    },
+    {
       src: "/images/Eletrônica_1.jpeg",
       alt: "José Roberto trabalhando com componentes eletrônicos e Arduino",
       title: "Desenvolvimento Eletrônico",
-      description: "Processo de programação e montagem dos circuitos Arduino com LEDs e componentes eletrônicos",
+      description:
+        "José Roberto concentrado no processo de programação e montagem dos circuitos Arduino com LEDs funcionando",
       section: "electronics",
     },
     {
@@ -67,14 +90,29 @@ export default function MaquetteGallery() {
       alt: "Bancada de trabalho com laptop, Arduino e componentes eletrônicos",
       title: "Setup de Programação",
       description:
-        "Ambiente de desenvolvimento com laptop, Arduino, LEDs funcionando e todo o setup de programação e testes",
+        "Ambiente completo de desenvolvimento com laptop, Arduino com LEDs acesos, componentes organizados e setup ativo",
       section: "electronics",
     },
     {
-      src: "/images/Processo_1.jpeg",
-      alt: "Estudantes trabalhando na construção da maquete com materiais recicláveis",
+      src: "/images/Eletrônica_3.jpeg",
+      alt: "Componentes eletrônicos adicionais do projeto",
+      title: "Componentes Eletrônicos",
+      description:
+        "Detalhes dos componentes eletrônicos utilizados no projeto, incluindo sensores e módulos de controle",
+      section: "electronics",
+    },
+    {
+      src: "/images/Construção.jpeg",
+      alt: "Processo de construção da maquete",
       title: "Processo de Construção",
-      description: "Dois estudantes trabalhando na montagem da maquete com materiais como papelão, EVA e ferramentas",
+      description: "Etapa de construção da maquete mostrando a montagem da estrutura com materiais recicláveis",
+      section: "process",
+    },
+    {
+      src: "/images/Processo_1.jpeg",
+      alt: "Estudantes trabalhando na construção da maquete",
+      title: "Trabalho em Equipe",
+      description: "Estudantes colaborando na montagem da maquete com materiais como papelão, EVA e ferramentas",
       section: "process",
     },
     {
@@ -82,6 +120,20 @@ export default function MaquetteGallery() {
       alt: "José Roberto examinando estrutura em miniatura da maquete",
       title: "Detalhamento de Componentes",
       description: "Análise detalhada e construção cuidadosa dos componentes em miniatura da maquete",
+      section: "process",
+    },
+    {
+      src: "/images/Processo_3.jpeg",
+      alt: "Etapa adicional do processo de construção",
+      title: "Finalização da Estrutura",
+      description: "Etapas finais de montagem e ajustes da estrutura da maquete Ocean-net",
+      section: "process",
+    },
+    {
+      src: "/images/Testes.jpeg",
+      alt: "Testes dos componentes eletrônicos da maquete",
+      title: "Testes e Validação",
+      description: "Processo de testes dos componentes eletrônicos e validação do funcionamento da maquete",
       section: "process",
     },
   ]
@@ -253,7 +305,7 @@ export default function MaquetteGallery() {
         )}
 
         {/* Section Selector */}
-        <div className="mb-12">
+        <div className="mb-12 hidden md:block">
           <div className="flex flex-wrap justify-center gap-4">
             {sections.map((section) => (
               <button

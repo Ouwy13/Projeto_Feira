@@ -12,36 +12,36 @@ export default function DevelopmentProcess() {
       title: "Planejamento",
       description:
         "Definição do escopo do projeto, pesquisa sobre cabos submarinos e energia eólica offshore, esboço inicial da maquete.",
-      image: "/placeholder.svg?height=400&width=600",
-      date: "Fevereiro 2024",
+      image: "/images/Planejamento.png",
+      date: "Fase Inicial",
     },
     {
       title: "Prototipagem",
       description:
         "Criação de protótipos em escala reduzida, testes de materiais e componentes eletrônicos, simulações no Roblox Studio.",
-      image: "/placeholder.svg?height=400&width=600",
-      date: "Março 2024",
+      image: "/images/Prototipagem.png",
+      date: "Fase de Desenvolvimento",
     },
     {
       title: "Construção",
       description:
-        "Montagem da estrutura base com materiais recicláveis, instalação dos componentes eletrônicos e programação do Arduino.",
-      image: "/placeholder.svg?height=400&width=600",
-      date: "Abril 2024",
+        "Montagem da estrutura base com latinhas e materiais recicláveis, instalação dos componentes eletrônicos e programação do Arduino.",
+      image: "/images/Construção.jpeg",
+      date: "Fase de Implementação",
     },
     {
       title: "Testes",
       description:
         "Verificação do funcionamento dos LEDs, mini ventiladores e sistema de energia, ajustes finais na programação.",
-      image: "/placeholder.svg?height=400&width=600",
-      date: "Maio 2024",
+      image: "/images/Testes.jpeg",
+      date: "Fase de Testes",
     },
     {
       title: "Finalização",
       description:
         "Acabamentos estéticos, documentação do projeto, preparação da apresentação para a feira de ciências.",
-      image: "/placeholder.svg?height=400&width=600",
-      date: "Junho 2024",
+      image: "/images/Visão_Geral.jpeg",
+      date: "Fase Final",
     },
   ]
 

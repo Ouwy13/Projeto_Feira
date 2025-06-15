@@ -5,17 +5,21 @@ import { ChevronDown } from "lucide-react"
 import dynamic from "next/dynamic"
 
 // Carregamento dinâmico do BackgroundElements para melhor performance
+// Isso evita que o componente de fundo seja renderizado no servidor
 const BackgroundElements = dynamic(() => import("./background-elements"), {
-  ssr: false,
-  loading: () => null,
+  ssr: false, // Desativa Server-Side Rendering para este componente
+  loading: () => null, // Não mostra nada durante o carregamento
 })
 
+// Componente Hero memoizado para evitar re-renderizações desnecessárias
 const Hero = memo(function Hero() {
+  // Refs para acessar elementos DOM diretamente para animações
   const titleRef = useRef<HTMLHeadingElement>(null)
   const subtitleRef = useRef<HTMLParagraphElement>(null)
   const descriptionRef = useRef<HTMLParagraphElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
 
+  // Função para rolar suavemente até a seção de projeto
   const scrollToProject = () => {
     const element = document.getElementById("projeto")
     if (element) {
@@ -23,14 +27,16 @@ const Hero = memo(function Hero() {
     }
   }
 
+  // Efeito para animar a entrada dos elementos com delays escalonados
   useEffect(() => {
     const elements = [
-      { ref: titleRef, delay: 0 },
-      { ref: subtitleRef, delay: 200 },
-      { ref: descriptionRef, delay: 400 },
-      { ref: buttonRef, delay: 600 },
+      { ref: titleRef, delay: 0 }, // Título principal aparece primeiro
+      { ref: subtitleRef, delay: 200 }, // Subtítulo aparece 200ms depois
+      { ref: descriptionRef, delay: 400 }, // Descrição aparece 400ms depois
+      { ref: buttonRef, delay: 600 }, // Botão aparece 600ms depois
     ]
 
+    // Adiciona a classe de animação para cada elemento após seu delay
     elements.forEach(({ ref, delay }) => {
       if (ref.current) {
         setTimeout(() => {
@@ -38,44 +44,51 @@ const Hero = memo(function Hero() {
         }, delay)
       }
     })
-  }, [])
+  }, []) // Executa apenas na montagem do componente
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
-      {/* Background com efeitos */}
+      {/* Background com efeitos visuais */}
       <div className="absolute inset-0">
+        {/* Grade de fundo com animação */}
         <div className="grid-background"></div>
+        {/* Elementos de fundo animados */}
         <BackgroundElements />
+        {/* Partículas simulando fluxo de dados */}
         <div className="data-flow">
+          {/* Gera 10 partículas com posições e animações aleatórias */}
           {Array.from({ length: 10 }).map((_, i) => (
             <div
               key={i}
               className="data-particle"
               style={{
-                left: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 5}s`,
-                animationDuration: `${5 + Math.random() * 10}s`,
+                left: `${Math.random() * 100}%`, // Posição horizontal aleatória
+                animationDelay: `${Math.random() * 5}s`, // Delay aleatório
+                animationDuration: `${5 + Math.random() * 10}s`, // Duração aleatória
               }}
             ></div>
           ))}
         </div>
       </div>
 
-      {/* Conteúdo */}
+      {/* Conteúdo principal do Hero */}
       <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
+        {/* Badge de identificação da turma */}
         <div className="mb-6">
           <span className="inline-block px-4 py-2 bg-blue-900/30 backdrop-blur-md rounded-full text-sm font-medium text-blue-300 border border-blue-900/50 mb-4">
             IEMA Pleno Brejo - Turma 204
           </span>
         </div>
 
+        {/* Título principal com animação de entrada e efeito de reflexo */}
         <h1
           ref={titleRef}
-          className="text-5xl md:text-7xl font-bold mb-6 tracking-tight opacity-0 transform translate-y-10 title-electric-subtle title-glow-subtle"
+          className="text-5xl md:text-7xl font-bold mb-6 tracking-tight opacity-0 transform translate-y-10 title-ocean-subtle title-glow-subtle"
         >
           Ocean-net
         </h1>
 
+        {/* Subtítulo com animação de entrada e efeito de reflexo */}
         <p
           ref={subtitleRef}
           className="text-xl md:text-2xl mb-4 font-light opacity-0 transform translate-y-10 title-ocean-subtle"
@@ -83,6 +96,7 @@ const Hero = memo(function Hero() {
           Conexões Eólicas Sustentáveis
         </p>
 
+        {/* Descrição do projeto com animação de entrada */}
         <p
           ref={descriptionRef}
           className="text-base md:text-lg text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed opacity-0 transform translate-y-10"
@@ -91,7 +105,9 @@ const Hero = memo(function Hero() {
           sustentabilidade e inclusão digital
         </p>
 
+        {/* Botão de ação e indicadores */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          {/* Botão principal com gradiente e animação de hover */}
           <button
             ref={buttonRef}
             onClick={scrollToProject}
@@ -99,6 +115,7 @@ const Hero = memo(function Hero() {
           >
             Explorar Projeto
           </button>
+          {/* Indicadores de características do projeto */}
           <div className="flex items-center space-x-4 text-gray-400">
             <div className="flex items-center space-x-2">
               <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
@@ -112,12 +129,14 @@ const Hero = memo(function Hero() {
         </div>
       </div>
 
-      {/* Seta para baixo */}
+      {/* Seta animada indicando scroll para baixo */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
         <ChevronDown className="h-8 w-8 text-white/50" />
       </div>
 
+      {/* Estilos específicos para animações e efeitos visuais */}
       <style jsx>{`
+        /* Grade de fundo com linhas sutis */
         .grid-background {
           position: absolute;
           inset: 0;
@@ -125,9 +144,10 @@ const Hero = memo(function Hero() {
             linear-gradient(rgba(0,102,255,0.03) 1px, transparent 1px),
             linear-gradient(90deg, rgba(0,102,255,0.03) 1px, transparent 1px);
           background-size: 50px 50px;
-          animation: gridMove 20s linear infinite;
+          animation: gridMove 20s linear infinite; /* Animação de movimento da grade */
         }
 
+        /* Container para partículas de dados */
         .data-flow {
           position: absolute;
           inset: 0;
@@ -135,6 +155,7 @@ const Hero = memo(function Hero() {
           pointer-events: none;
         }
 
+        /* Partículas individuais simulando fluxo de dados */
         .data-particle {
           position: absolute;
           width: 2px;
@@ -143,14 +164,16 @@ const Hero = memo(function Hero() {
           border-radius: 50%;
           box-shadow: 0 0 12px 2px rgba(0, 102, 255, 0.8);
           animation: dataFlow linear infinite;
-          will-change: transform;
+          will-change: transform; /* Otimização para animações */
         }
 
+        /* Animação de movimento da grade de fundo */
         @keyframes gridMove {
           0% { transform: translate(0, 0); }
           100% { transform: translate(50px, 50px); }
         }
 
+        /* Animação de fluxo das partículas de dados */
         @keyframes dataFlow {
           0% { 
             transform: translateY(-10px) scale(0.5);
@@ -168,6 +191,7 @@ const Hero = memo(function Hero() {
           }
         }
 
+        /* Animação de entrada para elementos */
         .animate-fade-in {
           animation: fadeIn 0.8s ease-out forwards;
         }
@@ -179,12 +203,22 @@ const Hero = memo(function Hero() {
           }
         }
 
+        /* Ajustes para dispositivos móveis */
         @media (max-width: 768px) {
           .data-particle {
-            animation-duration: 12s !important;
+            animation-duration: 12s !important; /* Animação mais lenta em mobile */
           }
           .grid-background {
-            animation-duration: 30s;
+            animation-duration: 30s; /* Movimento mais lento em mobile */
+          }
+          
+          /* Ajustar velocidade da animação de reflexo dos títulos em mobile */
+          .title-ocean-subtle {
+            animation-duration: 3s !important; /* Mesma velocidade do desktop */
+          }
+          
+          .title-glow-subtle {
+            animation-duration: 3s !important; /* Mesma velocidade do desktop */
           }
         }
       `}</style>

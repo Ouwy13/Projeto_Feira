@@ -7,6 +7,31 @@ export default function ArduinoSection() {
   const codeRefs = useRef<(HTMLDivElement | null)[]>([])
   const featureRefs = useRef<(HTMLDivElement | null)[]>([])
 
+  // Update the features array to reflect the actual components used
+  const features = [
+    {
+      icon: <Code className="h-8 w-8 text-blue-500" />,
+      title: "Código para LEDs",
+      description: "Controle de animações de LEDs RGB e normais para simular fluxo de dados",
+    },
+    {
+      icon: <Zap className="h-8 w-8 text-green-500" />,
+      title: "Geração de Energia",
+      description: "Mini ventiladores que geram energia para uma central de alimentação",
+    },
+    {
+      icon: <Cpu className="h-8 w-8 text-purple-500" />,
+      title: "ESP32-CAM",
+      description: "Captura de imagem em tempo real transmitida para um projetor",
+    },
+    {
+      icon: <Cpu className="h-8 w-8 text-cyan-500" />,
+      title: "Arduino Uno/Mega",
+      description: "Microcontroladores principais do projeto Ocean-net",
+    },
+  ]
+
+  // Update the codeBlocks array to reflect the actual code used
   const codeBlocks = [
     {
       title: "Configuração Inicial",
@@ -15,9 +40,8 @@ export default function ArduinoSection() {
 #include <FastLED.h>
 
 #define LED_PIN 6
-#define NUM_LEDS 20
-#define FAN_PIN 9
-#define BUTTON_PIN 2
+#define NUM_LEDS 36  // 6 RGBs + 30 normais
+#define FAN_ENERGY_PIN A0  // Pino para leitura da energia gerada pelos ventiladores
 
 CRGB leds[NUM_LEDS];
 bool systemActive = false;
@@ -25,8 +49,9 @@ bool systemActive = false;
 void setup() {
   Serial.begin(9600);
   FastLED.addLeds<WS2812, LED_PIN, GRB>(leds, NUM_LEDS);
-  pinMode(FAN_PIN, OUTPUT);
-  pinMode(BUTTON_PIN, INPUT_PULLUP);
+  
+  // Configuração para leitura da energia gerada pelos ventiladores
+  pinMode(FAN_ENERGY_PIN, INPUT);
   
   Serial.println("Ocean-net System Initialized");
 }`,
@@ -53,74 +78,75 @@ void setup() {
 }`,
     },
     {
-      title: "Controle das Turbinas",
-      description: "Simulação do sistema de energia eólica",
-      code: `void windTurbineControl() {
-  static unsigned long lastUpdate = 0;
-  static int fanSpeed = 0;
+      title: "Captura de Imagem ESP32-CAM",
+      description: "Código para captura e transmissão de imagem",
+      code: `// Código para ESP32-CAM
+#include "esp_camera.h"
+#include "Arduino.h"
+#include "WiFi.h"
+#include "esp_http_server.h"
+#include "camera_pins.h"
+
+// Configuração da câmera
+void setupCamera() {
+  camera_config_t config;
+  config.ledc_channel = LEDC_CHANNEL_0;
+  config.ledc_timer = LEDC_TIMER_0;
+  config.pin_d0 = Y2_GPIO_NUM;
+  config.pin_d1 = Y3_GPIO_NUM;
+  config.pin_d2 = Y4_GPIO_NUM;
+  config.pin_d3 = Y5_GPIO_NUM;
+  config.pin_d4 = Y6_GPIO_NUM;
+  config.pin_d5 = Y7_GPIO_NUM;
+  config.pin_d6 = Y8_GPIO_NUM;
+  config.pin_d7 = Y9_GPIO_NUM;
+  config.pin_xclk = XCLK_GPIO_NUM;
+  config.pin_pclk = PCLK_GPIO_NUM;
+  config.pin_vsync = VSYNC_GPIO_NUM;
+  config.pin_href = HREF_GPIO_NUM;
+  config.pin_sscb_sda = SIOD_GPIO_NUM;
+  config.pin_sscb_scl = SIOC_GPIO_NUM;
+  config.pin_pwdn = PWDN_GPIO_NUM;
+  config.pin_reset = RESET_GPIO_NUM;
+  config.xclk_freq_hz = 20000000;
+  config.pixel_format = PIXFORMAT_JPEG;
   
-  if(millis() - lastUpdate > 100) {
-    if(systemActive) {
-      // Aumenta velocidade gradualmente
-      fanSpeed = min(255, fanSpeed + 5);
+  // Inicializa a câmera
+  esp_err_t err = esp_camera_init(&config);
+  if (err != ESP_OK) {
+    Serial.printf("Camera init failed with error 0x%x", err);
+    return;
+  }
+}`,
+    },
+    {
+      title: "Sistema de Energia",
+      description: "Monitoramento da energia gerada pelos mini ventiladores",
+      code: `// Monitoramento da energia gerada pelos mini ventiladores
+void monitorEnergyGeneration() {
+  static unsigned long lastUpdate = 0;
+  static int energyLevel = 0;
+  
+  if(millis() - lastUpdate > 1000) {
+    // Lê o valor da energia gerada pelos ventiladores
+    int rawValue = analogRead(FAN_ENERGY_PIN);
+    energyLevel = map(rawValue, 0, 1023, 0, 100);
+    
+    Serial.print("Energia gerada: ");
+    Serial.print(energyLevel);
+    Serial.println("%");
+    
+    // Ajusta a intensidade dos LEDs com base na energia disponível
+    if(energyLevel < 20) {
+      // Modo de economia de energia
+      FastLED.setBrightness(50);
     } else {
-      // Diminui velocidade gradualmente
-      fanSpeed = max(0, fanSpeed - 10);
+      FastLED.setBrightness(255);
     }
     
-    analogWrite(FAN_PIN, fanSpeed);
     lastUpdate = millis();
   }
 }`,
-    },
-    {
-      title: "Loop Principal",
-      description: "Controle geral do sistema Ocean-net",
-      code: `void loop() {
-  // Verifica botão de ativação
-  if(digitalRead(BUTTON_PIN) == LOW) {
-    systemActive = !systemActive;
-    delay(300); // Debounce
-    
-    Serial.print("System ");
-    Serial.println(systemActive ? "ON" : "OFF");
-  }
-  
-  if(systemActive) {
-    dataFlowAnimation();
-    windTurbineControl();
-    oceanWaveEffect();
-  } else {
-    // Modo standby
-    fill_solid(leds, NUM_LEDS, CRGB::DarkBlue);
-    FastLED.show();
-  }
-  
-  delay(50);
-}`,
-    },
-  ]
-
-  const features = [
-    {
-      icon: <Code className="h-8 w-8 text-blue-500" />,
-      title: "FastLED Library",
-      description: "Controle avançado de LEDs RGB para simular fluxo de dados",
-    },
-    {
-      icon: <Zap className="h-8 w-8 text-green-500" />,
-      title: "PWM Control",
-      description: "Controle de velocidade dos mini ventiladores via PWM",
-    },
-    {
-      icon: <Settings className="h-8 w-8 text-purple-500" />,
-      title: "Sensor Integration",
-      description: "Botões e sensores para interação com o sistema",
-    },
-    {
-      icon: <Cpu className="h-8 w-8 text-cyan-500" />,
-      title: "Arduino Uno",
-      description: "Microcontrolador principal do projeto Ocean-net",
     },
   ]
 
@@ -242,6 +268,7 @@ void setup() {
             </p>
           </div>
 
+          {/* Update the Funcionalidades section */}
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center p-6 bg-black/50 backdrop-blur-sm rounded-2xl border border-gray-800">
               <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -249,7 +276,8 @@ void setup() {
               </div>
               <h4 className="text-xl font-semibold mb-3">Simulação de Dados</h4>
               <p className="text-gray-400 text-sm">
-                LEDs RGB simulam o fluxo de dados pelos cabos submarinos com efeitos visuais dinâmicos.
+                6 LEDs RGB e 30 LEDs normais simulam o fluxo de dados pelos cabos submarinos com efeitos visuais
+                dinâmicos.
               </p>
             </div>
 
@@ -257,20 +285,52 @@ void setup() {
               <div className="w-16 h-16 bg-gradient-to-r from-green-600 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Settings className="h-8 w-8" />
               </div>
-              <h4 className="text-xl font-semibold mb-3">Controle de Energia</h4>
+              <h4 className="text-xl font-semibold mb-3">Geração de Energia</h4>
               <p className="text-gray-400 text-sm">
-                Mini ventiladores representam as turbinas eólicas com controle de velocidade variável.
+                Mini ventiladores representam as turbinas eólicas que geram energia para uma central de alimentação.
               </p>
             </div>
 
             <div className="text-center p-6 bg-black/50 backdrop-blur-sm rounded-2xl border border-gray-800">
               <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Play className="h-8 w-8" />
+                <Cpu className="h-8 w-8" />
               </div>
-              <h4 className="text-xl font-semibold mb-3">Interação</h4>
+              <h4 className="text-xl font-semibold mb-3">Transmissão de Imagem</h4>
               <p className="text-gray-400 text-sm">
-                Botões permitem ligar/desligar o sistema e alternar entre diferentes modos de operação.
+                Câmeras ESP32-CAM capturam imagens das pessoas que passam pelo projeto, transmitindo em tempo real para
+                um projetor.
               </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Add technical specifications section */}
+        <div className="mt-8 bg-black/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800">
+          <h4 className="text-xl font-semibold mb-3 text-center">Especificações da Instalação</h4>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="p-3 bg-gray-900/50 rounded-lg">
+              <p className="text-blue-400 font-medium">Microcontroladores</p>
+              <p className="text-gray-300">Arduino Uno e Mega</p>
+            </div>
+            <div className="p-3 bg-gray-900/50 rounded-lg">
+              <p className="text-blue-400 font-medium">Câmeras</p>
+              <p className="text-gray-300">ESP32-CAM</p>
+            </div>
+            <div className="p-3 bg-gray-900/50 rounded-lg">
+              <p className="text-blue-400 font-medium">Mine Ventiladores</p>
+              <p className="text-gray-300">Motorzinho e Cooler</p>
+            </div>
+            <div className="p-3 bg-gray-900/50 rounded-lg">
+              <p className="text-blue-400 font-medium">Suporte de Câmera</p>
+              <p className="text-gray-300">CAM-MB, FTD232, TTL FT232RL</p>
+            </div>
+            <div className="p-3 bg-gray-900/50 rounded-lg">
+              <p className="text-blue-400 font-medium">Materiais</p>
+              <p className="text-gray-300">Protoboards, Jumpers, Resistores</p>
+            </div>
+            <div className="p-3 bg-gray-900/50 rounded-lg">
+              <p className="text-blue-400 font-medium">Ferramentas</p>
+              <p className="text-gray-300">Alicate, Máquina de Solda</p>
             </div>
           </div>
         </div>

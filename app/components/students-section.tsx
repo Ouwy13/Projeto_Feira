@@ -27,7 +27,7 @@ export default function StudentsSection() {
     },
     {
       name: "Erika Maria",
-      role: "Pesquisadora",
+      role: "Pesquisa",
       specialty: "Apresentação",
       image: "/images/Erika.png",
       contributions: ["Preparação de apresentações", "Documentação do projeto", "Contribuição na pesquisa"],
@@ -51,11 +51,11 @@ export default function StudentsSection() {
   const materials = [
     {
       category: "Recicláveis",
-      items: ["EVA", "Papelão", "Compensado", "Palitos", "Tampinhas", "Tubos de papel alumínio"],
+      items: ["EVA", "Papelão", "Compensado", "Palitos", "Latinhas", "Tubos de papel alumínio"],
     },
     {
       category: "Tecnológicos",
-      items: ["Fitas LED RGB", "Mini ventiladores", "Bateria de lítio", "Arduino", "Cabos de rede"],
+      items: ["Fitas LED RGB", "Mini ventiladores", "Bateria de lítio", "Arduino", "Cabos de rede", "Câmeras ESP32"],
     },
   ]
 

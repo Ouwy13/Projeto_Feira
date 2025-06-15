@@ -47,10 +47,10 @@ export default function MaterialsSection() {
   const specifications = [
     { label: "Dimensões da Maquete", value: "60cm x 40cm x 30cm" },
     { label: "Voltagem do Sistema", value: "5V DC (Arduino)" },
-    { label: "Autonomia da Bateria", value: "4-6 horas contínuas" },
-    { label: "LEDs Utilizados", value: "20 unidades RGB" },
+    { label: "Autonomia da Bateria", value: "2 horas contínuas" },
+    { label: "LEDs Utilizados", value: "6 RGBs, 42 Comuns" },
     { label: "Materiais Recicláveis", value: "85% do total" },
-    { label: "Tempo de Construção", value: "3 meses" },
+    { label: "Tempo de Construção", value: "2 meses" },
   ]
 
   useEffect(() => {

@@ -41,7 +41,7 @@ export default function CollaboratorsSection() {
   ]
 
   const platforms = [
-    { name: "Curso UMIO", description: "Plataforma de apoio educacional" },
+    { name: "Curso 1MIO", description: "Plataforma de apoio educacional" },
     { name: "Programação em Arduino", description: "Recursos para desenvolvimento eletrônico" },
     { name: "Roblox Studio", description: "Plataforma de esboço do projeto" },
     { name: "Visual Studio Code", description: "Editor de código para desenvolvimento" },

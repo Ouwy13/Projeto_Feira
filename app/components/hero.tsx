@@ -83,7 +83,7 @@ const Hero = memo(function Hero() {
         {/* Título principal com animação de entrada e efeito de reflexo */}
         <h1
           ref={titleRef}
-          className="text-5xl md:text-7xl font-bold mb-6 tracking-tight opacity-0 transform translate-y-10 title-ocean-subtle title-glow-subtle"
+          className="text-5xl md:text-7xl font-bold mb-6 tracking-tight opacity-0 transform translate-y-10 title-ocean-net-special"
         >
           Ocean-net
         </h1>
@@ -212,13 +212,13 @@ const Hero = memo(function Hero() {
             animation-duration: 30s; /* Movimento mais lento em mobile */
           }
           
-          /* Ajustar velocidade da animação de reflexo dos títulos em mobile */
+          /* Manter velocidade consistente das animações de reflexo dos títulos */
           .title-ocean-subtle {
-            animation-duration: 3s !important; /* Mesma velocidade do desktop */
+            animation-duration: 8s !important; /* Velocidade consistente */
           }
           
           .title-glow-subtle {
-            animation-duration: 3s !important; /* Mesma velocidade do desktop */
+            animation-duration: 8s !important; /* Velocidade consistente */
           }
         }
       `}</style>
